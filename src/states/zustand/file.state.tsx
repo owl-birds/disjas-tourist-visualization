@@ -1,21 +1,20 @@
 import create from "zustand";
+// types
+import { Row, TouristData } from "../../helpers/dataTypes";
 
-// paths
-
-interface FileStore {
-  data: any[];
-  reInput: (newData: any[]) => void;
+interface TotalTouristStore {
+  data: TouristData;
+  reInputData: (newData: {}) => void;
+  initialize: () => void;
 }
 
-export {};
-// import create from "zustand";
-// interface PopulationState {
-//   population: number;
-//   increase: (by: number) => void;
-// }
-// const usePopulationStore = create<PopulationState>()((set) => ({
-//   population: 0,
-//   increase: (by: number) =>
-//     set((state) => ({ population: state.population + by })),
-// }));
-// export { usePopulationStore };
+const useTotalTouristStore = create<TotalTouristStore>()((set) => ({
+  data: {},
+  reInputData: (newData: TouristData) => set((state) => ({ data: newData })),
+  initialize: () =>
+    set((state) => {
+      return {};
+    }),
+}));
+
+export { useTotalTouristStore };
