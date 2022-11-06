@@ -6,12 +6,13 @@
   justify-content: center;
   padding: auto;
   .chart-svg {
-    width: 100%;
+    min-width: fit-content;
+    min-height: fit-content;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 10px;
     svg {
-      border-radius: 10px;
     }
   }
 }
