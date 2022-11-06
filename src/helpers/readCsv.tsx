@@ -16,8 +16,10 @@ const cleaningData = (data: any[], countryCol: string): TouristData => {
   for (let row of data) {
     const touristDataObjArr: Row[] = [];
     for (let year of years) {
-      const tempObj: Row = { year: year, totalTourist: row[year] };
-      touristDataObjArr.push(tempObj);
+      if (row[year] !== "-") {
+        const tempObj: Row = { year: year, totalTourist: row[year] };
+        touristDataObjArr.push(tempObj);
+      }
     }
     if (row[countryCol] === "JUMLAH") {
       finalData["TOTAL"] = touristDataObjArr;

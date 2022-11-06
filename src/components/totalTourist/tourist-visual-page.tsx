@@ -14,8 +14,10 @@ interface Props {}
 import "./style.scss";
 const TouristVisualPage = (props: Props) => {
   const data: TouristData = useTotalTouristStore((state) => state.data);
+  console.log(data);
   // local states
-  const [tempMaxVertical, setTempMaxVertical] = useState<number>(10000000);
+  const maxTotalOne: number = 2000000;
+  const [tempMaxVertical, setTempMaxVertical] = useState<number>(maxTotalOne);
   const [tempMinVertical, setTempMinVertical] = useState<number>(0);
   return (
     <section className="total-tourist-visual">
@@ -33,14 +35,14 @@ const TouristVisualPage = (props: Props) => {
       <div className="visualization-manipulation">
         <Slider
           componentDesc={"MAX SLIDER"}
-          maxValue={10000000}
+          maxValue={maxTotalOne}
           minValue={0}
-          defaultValue={10000000}
+          defaultValue={maxTotalOne}
           setStateValue={setTempMaxVertical}
         />
         <Slider
           componentDesc={"MIN SLIDER"}
-          maxValue={10000000}
+          maxValue={maxTotalOne}
           minValue={0}
           defaultValue={0}
           setStateValue={setTempMinVertical}
