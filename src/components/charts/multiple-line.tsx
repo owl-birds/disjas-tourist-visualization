@@ -370,7 +370,7 @@ const MultipleLine = (props: Props) => {
               {idx === 0 ? "Asia Pacific Countries" : null}
               {idx === 1 ? "America Countries" : null}
               {idx === 2 ? "Europe Countries" : null}
-              {idx === 3 ? "Asia Pacific Countries" : null}
+              {idx === 3 ? "etc (Middle east or Africa" : null}
             </div>
           ))}
         </div>
