@@ -24,6 +24,12 @@ import {
   line,
   curveBasis,
 } from "d3";
+// regions
+import {
+  asiaPacificCountries,
+  americaCountries,
+  europeCountries,
+} from "../../helpers/regionalList";
 
 import "./multiple-line.scss";
 interface Props {
@@ -43,6 +49,8 @@ interface Props {
   lineWidth?: number;
   tickPadding?: number;
   lineHoverColor?: string;
+  toolTipFontSize?: number;
+  colorsType?: string[];
 }
 
 const MultipleLine = (props: Props) => {
@@ -63,6 +71,7 @@ const MultipleLine = (props: Props) => {
   const verticalCol: string = props.verticalCol;
   // finding all the countries/ different kind of line
   const linesArr: string[] = Object.keys(data);
+  // console.log(linesArr);
 
   // svg configures
   const WIDTH: number = props.width ? props.width : 700;
@@ -78,6 +87,12 @@ const MultipleLine = (props: Props) => {
   const lineHoverColor: string = props.lineHoverColor
     ? props.lineHoverColor
     : "#4ED79B";
+  const toolTipFontSize: number = props.toolTipFontSize
+    ? props.toolTipFontSize
+    : 5;
+  const colorsType: string[] | null =
+    props.colorsType !== undefined ? props.colorsType : null;
+  console.log(colorsType);
 
   // max and min
   // vertical
@@ -127,6 +142,21 @@ const MultipleLine = (props: Props) => {
     } else {
       selection.attr("width", WIDTH).attr("height", HEIGHT);
       // .style("background-color", "#fff");
+      // creating tooltip
+      const tooltip: Selection<HTMLDivElement, unknown, HTMLElement, any> =
+        // select(`#scatter-plot-${scatterPlotId}`) // in the fuiture maybe will break something cause classname
+        select("#svg-wrapper-div")
+          .append("div")
+          .attr("class", "tooltip")
+          .style("position", "absolute")
+          .style("z-index", "10") //An element with greater stack order is always in front of an element with a lower stack order.
+          .style("visibility", "hidden")
+          .style("background", "#4d4d4d")
+          .style("padding", "5px")
+          .style("font-weight", "bold")
+          .style("color", "#fff")
+          .style("font-size", toolTipFontSize)
+          .text("tooltip template"); // is this best practice?
       // innerbox
       const chartBoxG: Selection<SVGGElement, unknown, null, undefined> =
         selection
@@ -171,10 +201,42 @@ const MultipleLine = (props: Props) => {
               .style("cursor", "pointer")
               .attr("stroke", lineHoverColor)
               .attr("stroke-width", 5);
+            tooltip.style("visibility", "visible").text(`${linesArr[i]}`);
+          })
+          .on("mousemove", (element) => {
+            return tooltip
+              .style("top", `${element.pageY + 10}px`)
+              .style("left", `${element.clientX + 10}px`);
           })
           .on("mouseout", () => {
-            pathElement.attr("stroke", "#fff").attr("stroke-width", lineWidth);
+            let color: string | null = null;
+            if (colorsType) {
+              if (asiaPacificCountries[linesArr[i]]) {
+                color = colorsType[0];
+              } else if (americaCountries[linesArr[i]]) {
+                color = colorsType[1];
+              } else if (europeCountries[linesArr[i]]) {
+                color = colorsType[2];
+              } else {
+                color = colorsType[3];
+              }
+            }
+            tooltip.style("visibility", "hidden");
+            pathElement
+              .attr("stroke", color ? color : "#fff")
+              .attr("stroke-width", lineWidth);
           });
+        if (colorsType) {
+          if (asiaPacificCountries[linesArr[i]]) {
+            pathElement.attr("stroke", colorsType[0]);
+          } else if (americaCountries[linesArr[i]]) {
+            pathElement.attr("stroke", colorsType[1]);
+          } else if (europeCountries[linesArr[i]]) {
+            pathElement.attr("stroke", colorsType[2]);
+          } else {
+            pathElement.attr("stroke", colorsType[3]);
+          }
+        }
       }
     }
   }, [selection]);
@@ -183,6 +245,21 @@ const MultipleLine = (props: Props) => {
     if (selection) {
       // clean it first
       selection.selectAll("*").remove();
+      select(".tooltip").remove();
+      const tooltip: Selection<HTMLDivElement, unknown, HTMLElement, any> =
+        // select(`#scatter-plot-${scatterPlotId}`) // in the fuiture maybe will break something cause classname
+        select("#svg-wrapper-div")
+          .append("div")
+          .attr("class", "tooltip")
+          .style("position", "absolute")
+          .style("z-index", "10") //An element with greater stack order is always in front of an element with a lower stack order.
+          .style("visibility", "hidden")
+          .style("background", "#4d4d4d")
+          .style("padding", "5px")
+          .style("font-weight", "bold")
+          .style("color", "#fff")
+          .style("font-size", toolTipFontSize)
+          .text("tooltip template"); // is this best practice?
       // update the new one
       selection.attr("width", WIDTH).attr("height", HEIGHT);
       // .style("background-color", "#fff");
@@ -230,17 +307,73 @@ const MultipleLine = (props: Props) => {
               .style("cursor", "pointer")
               .attr("stroke", lineHoverColor)
               .attr("stroke-width", 5);
+            tooltip.style("visibility", "visible").text(`${linesArr[i]}`);
+          })
+          .on("mousemove", (element) => {
+            return tooltip
+              .style("top", `${element.pageY + 10}px`)
+              .style("left", `${element.clientX + 10}px`);
           })
           .on("mouseout", () => {
-            pathElement.attr("stroke", "#fff").attr("stroke-width", lineWidth);
+            let color: string | null = null;
+            if (colorsType) {
+              if (asiaPacificCountries[linesArr[i]]) {
+                color = colorsType[0];
+              } else if (americaCountries[linesArr[i]]) {
+                color = colorsType[1];
+              } else if (europeCountries[linesArr[i]]) {
+                color = colorsType[2];
+              } else {
+                color = colorsType[3];
+              }
+            }
+            tooltip.style("visibility", "hidden");
+            pathElement
+              .attr("stroke", color ? color : "#fff")
+              .attr("stroke-width", lineWidth);
           });
+        if (colorsType) {
+          if (asiaPacificCountries[linesArr[i]]) {
+            pathElement.attr("stroke", colorsType[0]);
+          } else if (americaCountries[linesArr[i]]) {
+            pathElement.attr("stroke", colorsType[1]);
+          } else if (europeCountries[linesArr[i]]) {
+            pathElement.attr("stroke", colorsType[2]);
+          } else {
+            pathElement.attr("stroke", colorsType[3]);
+          }
+        }
       }
     }
   }, [MAX_VERTICAL_VALUE, MIN_VERTICAL_VALUE]);
   return (
     <div className="chart-box">
-      <div className="chart-svg">
-        <svg ref={svgRef}></svg>
+      <div className="chart-svg-wrapper">
+        <div className="svg-wrapper" id={"svg-wrapper-div"}>
+          <svg ref={svgRef}></svg>
+          <span>{horizontalCol}</span>
+        </div>
+        <div className="chart-desc-color">
+          {colorsType?.map((_, idx) => (
+            <div
+              style={{
+                color:
+                  idx === 0
+                    ? colorsType[0]
+                    : idx === 1
+                    ? colorsType[1]
+                    : idx === 2
+                    ? colorsType[2]
+                    : colorsType[3],
+              }}
+            >
+              {idx === 0 ? "Asia Pacific Countries" : null}
+              {idx === 1 ? "America Countries" : null}
+              {idx === 2 ? "Europe Countries" : null}
+              {idx === 3 ? "Asia Pacific Countries" : null}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

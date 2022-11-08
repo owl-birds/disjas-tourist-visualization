@@ -5,6 +5,7 @@ interface Props {
   maxValue?: number;
   defaultValue?: number;
   setStateValue?: Dispatch<SetStateAction<number>>;
+  currValue?: number | null;
 }
 
 import "./slider.scss";
@@ -17,6 +18,8 @@ const Slider = (props: Props) => {
   const defaultValue: number = props.defaultValue ? props.defaultValue : 0;
   const setStateValue: Dispatch<SetStateAction<number>> | null =
     props.setStateValue ? props.setStateValue : null;
+  const currValue: number | null =
+    props.currValue !== undefined ? props.currValue : null;
 
   // event function
   const onInputHandler = (event: FormEvent<HTMLInputElement>) => {
@@ -27,7 +30,9 @@ const Slider = (props: Props) => {
   };
   return (
     <div className="slider">
-      <h4>{componentDesc}</h4>
+      <h4>
+        {componentDesc} : {currValue}
+      </h4>
       <div>
         <input
           type="range"

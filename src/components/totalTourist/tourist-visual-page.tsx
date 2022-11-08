@@ -15,6 +15,10 @@ import "./style.scss";
 const TouristVisualPage = (props: Props) => {
   const data: TouristData = useTotalTouristStore((state) => state.data);
   console.log(data);
+
+  // color type based on region
+  const colorsType: string[] = ["#FBF608", "#fff", "#01DEE6", "#FB475E"];
+
   // local states
   const maxTotalOne: number = 2000000;
   const [tempMaxVertical, setTempMaxVertical] = useState<number>(maxTotalOne);
@@ -22,7 +26,10 @@ const TouristVisualPage = (props: Props) => {
   return (
     <section className="total-tourist-visual">
       <div className="visualization-container">
-        <h3>Total Tourist Visualization (in Million)</h3>
+        <h3>
+          Visualisasi Jumlah Kunjungan Wisatawan Mancanegara ke Indonesia
+          Menurut Kebangsaan (in Million)
+        </h3>
         <MultipleLine
           data={data}
           horizontalCol={"year"}
@@ -30,21 +37,24 @@ const TouristVisualPage = (props: Props) => {
           lineHoverColor={randomHexaColor()}
           maxVerticalValue={tempMaxVertical}
           minVerticalValue={tempMinVertical}
+          colorsType={colorsType}
         />
       </div>
       <div className="visualization-manipulation">
         <Slider
-          componentDesc={"MAX SLIDER"}
+          componentDesc={"MAX TOTAL TOURIST"}
           maxValue={maxTotalOne}
           minValue={0}
           defaultValue={maxTotalOne}
+          currValue={tempMaxVertical}
           setStateValue={setTempMaxVertical}
         />
         <Slider
-          componentDesc={"MIN SLIDER"}
+          componentDesc={"MIN TOTAL TOURIST"}
           maxValue={maxTotalOne}
           minValue={0}
           defaultValue={0}
+          currValue={tempMinVertical}
           setStateValue={setTempMinVertical}
         />
       </div>

@@ -5,14 +5,18 @@
   align-content: center;
   justify-content: center;
   padding: auto;
-  .chart-svg {
+  .chart-svg-wrapper {
     min-width: fit-content;
     min-height: fit-content;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 10px;
-    svg {
+    .svg-wrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
   }
 }
